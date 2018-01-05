@@ -6,7 +6,8 @@ cd
 unzip -o data/dns_pcap_synthetic_sample.zip -d data/dns
 cp data/dns/*.pcap /collector_path/dns
 
-# wait for dns collector and worker to finish
+## wait 5 min
+echo "waiting 5 for dns collector and worker to populate data"
 sleep 5m
 
 ## spot ml

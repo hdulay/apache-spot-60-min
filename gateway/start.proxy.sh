@@ -6,9 +6,9 @@ cd
 rm -f /collector_path/proxy/*
 unzip data/bluecoat_proxy_big.zip -d /collector_path/proxy
 
-# wait for proxy collector and worker to finish
+## wait 5 min
+echo "waiting 5 for proxy collector and worker to populate data"
 sleep 5m
-
 
 ## spot ml
 cd
