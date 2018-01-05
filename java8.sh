@@ -20,7 +20,11 @@ sudo rpm -ivh "http://archive.cloudera.com/director/redhat/7/x86_64/director/2.5
 sudo ln -s /usr/java/jdk1.8.0_121-cloudera /usr/java/default
 sudo ln -s /usr/java/default/bin/java /usr/bin/java
 
+sudo yum install -y git
+
 # spot user
 sudo adduser spot
 echo spot | sudo passwd spot --stdin
 sudo usermod -aG wheel spot
+
+
