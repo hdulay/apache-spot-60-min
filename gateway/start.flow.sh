@@ -5,7 +5,7 @@
 cd
 mkdir -p /collector_path/flow
 rm -f /collector_path/flow/*
-tar -xvf data/nfcapd_aws_utc_an.tar.gz -C /collector_path/flow > flow.gen.out 2>&1
+tar -xvf data/nfcapd_aws_utc_an.tar.gz -C /collector_path/flow
 
 # wait for flow collector and worker to finish
 sleep 5m

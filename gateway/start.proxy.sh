@@ -4,7 +4,7 @@
 ### send proxy data
 cd
 rm -f /collector_path/proxy/*
-unzip data/bluecoat_proxy_big.zip -d /collector_path/proxy > proxy.gen.out 2>&1 &
+unzip data/bluecoat_proxy_big.zip -d /collector_path/proxy
 
 # wait for proxy collector and worker to finish
 sleep 5m
