@@ -25,6 +25,7 @@ sudo pip install cm-api
 # get spot ####################################################################
 cd
 git clone -b SPOT-181_ODM https://github.com/apache/incubator-spot
+## the work after this commit is requires a kerberized cluster
 git checkout 5c18a1df33dedaf2cc0d2bc2ebd0491a6c227014
 
 # update spot.conf and ingest_conf.json, $CM is the CM hostname ###############
