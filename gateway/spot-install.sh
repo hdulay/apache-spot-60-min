@@ -25,6 +25,7 @@ sudo pip install cm-api
 # get spot ####################################################################
 cd
 git clone -b SPOT-181_ODM https://github.com/apache/incubator-spot
+git checkout 5c18a1df33dedaf2cc0d2bc2ebd0491a6c227014
 
 # update spot.conf and ingest_conf.json, $CM is the CM hostname ###############
 sudo python spot.conf.py -cm $CM -cn 'apache-spot' -g $(hostname)
@@ -117,7 +118,7 @@ wget https://github.com/sbt/sbt/releases/download/v1.0.4/sbt-1.0.4.tgz
 tar xvf sbt-1.0.4.tgz
 sudo ln -s /home/spot/sbt/bin/sbt /usr/bin/sbt
 cd incubator-spot/spot-ml
-# sbt "set test in assembly := {}" clean assembly
+sbt "set test in assembly := {}" clean assembly
 sbt assembly
 
 ###### spot oa ################################################################
