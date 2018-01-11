@@ -25,11 +25,12 @@ sudo pip install cm-api
 # get spot ####################################################################
 cd
 git clone -b SPOT-181_ODM https://github.com/apache/incubator-spot
-## the work after this commit is requires a kerberized cluster
 cd incubator-spot
+## the work after this commit is requires a kerberized cluster
 git checkout 5c18a1df33dedaf2cc0d2bc2ebd0491a6c227014
 
 # update spot.conf and ingest_conf.json, $CM is the CM hostname ###############
+cd
 sudo python spot.conf.py -cm $CM -cn 'apache-spot' -g $(hostname)
 sudo chown spot:spot /etc/spot.conf
 sudo chown spot:spot incubator-spot/spot-ingest/ingest_conf.json
@@ -39,6 +40,7 @@ mv incubator-spot/spot-ingest/pipelines/proxy/bluecoat.py incubator-spot/spot-in
 cp bluecoat.py incubator-spot/spot-ingest/pipelines/proxy/
 
 # spot setup hdfs #############################################################
+cd
 cd incubator-spot/spot-setup
 ./hdfs_setup.sh
 
@@ -132,7 +134,7 @@ cd incubator-spot/spot-oa
 sudo pip install -r requirements.txt
 sudo pip install --upgrade urllib3 # had to do this
 sudo pip uninstall --yes graphql-core
-sudo pip install graphql-core==1.1.0
+sudo pip install graphql-core==1.1.0 # role back to 1.1.0
 # iploc
 tar xvf iploc.tar.gz
 mv iploc.csv incubator-spot/spot-oa/context
