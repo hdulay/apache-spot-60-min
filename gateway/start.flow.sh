@@ -8,7 +8,7 @@ rm -f /collector_path/flow/*
 tar -xvf data/nfcapd_aws_utc_an.tar.gz -C /collector_path/flow
 
 ## wait 5 min
-echo "waiting 5 for flow collector and worker to populate data"
+echo "waiting 5 min for flow collector and worker to populate data"
 sleep 5m
 
 ## spot ml
