@@ -14,7 +14,7 @@ sleep 5m
 ## spot ml
 cd
 cd incubator-spot/spot-ml
-./ml_ops.sh 20160127 flow 1000 200
+./ml_ops.sh 20160127 flow .1 200
 
 ## spot oa
 cd
