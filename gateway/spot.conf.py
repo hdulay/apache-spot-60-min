@@ -136,7 +136,7 @@ def main():
     #dns suspicious connects config
     props.append(tuple(('USER_DOMAIN', "'cloudera'")))
 
-    props.append(tuple(('SPK_EXEC', "'6'")))
+    props.append(tuple(('SPK_EXEC', "'3'")))
     props.append(tuple(('SPK_EXEC_MEM', "'2G'")))
     props.append(tuple(('SPK_DRIVER_MEM', "'1G'")))
     props.append(tuple(('SPK_DRIVER_MAX_RESULTS', "'1G'")))
