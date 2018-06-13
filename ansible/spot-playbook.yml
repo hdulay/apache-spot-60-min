@@ -1,0 +1,153 @@
+---
+- name: spot setup
+  hosts: gateway
+  remote_user: ec2-user
+  become: yes 
+  become_user: spot
+  tasks:
+  - name: install the 'Development tools' package group
+    yum:
+      name: "@Development tools"
+      state: present
+    become: yes
+    become_user: root
+    
+  - name: install other deps
+    yum:
+      name: "{{ item }}"
+      state: latest
+    loop:
+      - wget
+      - tree
+      - git
+      - python-devel
+      - glib2-devel
+      - gtk2-devel 
+      - gtk+-devel 
+      - bison 
+      - qt-devel 
+      - qt5-qtbase-devel 
+      - graphite2-devel
+      - https://www.rpmfind.net/linux/centos/7.5.1804/os/x86_64/Packages/libpcap-devel-1.5.3-11.el7.x86_64.rpm
+    become: yes
+    become_user: root
+    ignore_errors: yes
+    
+  - name: check pip
+    command: "pip --version"
+    register: pip_is_installed
+    ignore_errors: yes
+    changed_when: false
+
+  - name: install pip if not installed
+    block:
+      - name: download get-pip.py
+        get_url: 
+          url: https://bootstrap.pypa.io/get-pip.py  
+          dest: /tmp
+      - name: install pip
+        command: "python /tmp/get-pip.py"
+        become: yes
+        become_user: root
+      - name: delete get-pip.py
+        file: 
+          state: absent 
+          path: /tmp/get-pip.py
+    when: pip_is_installed.rc != 0
+
+
+  - name: pip installs
+    pip:
+      name: cm-api
+    become: yes
+    become_user: root
+    loop:
+      - cm-api
+      - watchdog
+      - kafka-python
+      - impyla
+
+  - name: get spot from github
+    git:
+      repo: https://github.com/apache/incubator-spot
+      dest: incubator-spot
+      clone: true
+      version: SPOT-181_ODM
+
+  - name: check nfdump
+    command: "/usr/local/bin/nfdump -V"
+    register: nfdump_is_installed
+    ignore_errors: yes
+    changed_when: false
+
+
+  - name: install nfdump for netflow
+    block:
+      - name: get automake because vm doesn't have correct version
+        unarchive:
+          src: http://ftp.gnu.org/gnu/automake/automake-1.14.tar.gz
+          dest: /home/spot
+          remote_src: yes
+      - name: configure automake
+        command: /home/spot/automake-1.14/configure
+        args:
+          chdir: /home/spot/automake-1.14
+      - name: make automake
+        make:
+          chdir: /home/spot/automake-1.14
+          target: install
+        become: yes
+        become_user: root
+      - name: 
+        git:
+          repo: https://github.com/Open-Network-Insight/spot-nfdump.git 
+          clone: true
+          dest: nfdump
+          force: yes
+      - name: installing nfdump without sudo
+        command: /home/spot/nfdump/install_nfdump.sh
+        args:
+          chdir: /home/spot/nfdump
+        register: nfdump
+        ignore_errors: yes
+      - name: installing nfdump with sudo
+        command: /home/spot/nfdump/install_nfdump.sh
+        args:
+          chdir: /home/spot/nfdump
+        register: nfdump
+        become: yes
+        become_user: root
+        ignore_errors: yes
+    when: nfdump_is_installed.rc != 0
+   
+  - name: check wireshark
+    command: "/usr/local/bin/tshark -v"
+    register: wireshark_is_installed
+    ignore_errors: yes
+    changed_when: false
+
+  - name: install wireshark for DNS data
+    block:
+      - name: download wireshark
+        get_url: 
+          url: https://www.wireshark.org/download/src/all-versions/wireshark-2.2.9.tar.bz2
+          dest: /home/spot
+      - name: unzip wireshark
+        unarchive: 
+          src: /home/spot/wireshark-2.2.9.tar.bz2
+          dest: /home/spot
+          remote_src: yes
+      - name: configure wireshark
+        command: /home/spot/wireshark-2.2.9/configure --with-gtk2 --disable-wireshark
+        args:
+          chdir: /home/spot/wireshark-2.2.9
+        become: yes
+        become_user: root
+      - name: make wireshark
+        make:
+          chdir: /home/spot/wireshark-2.2.9
+          target: install
+        become: yes
+        become_user: root
+    when: wireshark_is_installed != 0
+  
