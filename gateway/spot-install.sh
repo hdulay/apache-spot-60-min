@@ -27,7 +27,7 @@ cd
 git clone -b SPOT-181_ODM https://github.com/apache/incubator-spot
 cd incubator-spot
 ## the work after this commit is requires a kerberized cluster
-git checkout 5c18a1df33dedaf2cc0d2bc2ebd0491a6c227014
+#git checkout 5c18a1df33dedaf2cc0d2bc2ebd0491a6c227014
 
 # update spot.conf and ingest_conf.json, $CM is the CM hostname ###############
 cd
@@ -77,8 +77,8 @@ sudo ./install_nfdump.sh # with sudo
 # manually get and install libpcap-devel ######################################
 # https://www.rpmfind.net/linux/rpm2html/search.php?query=libpcap-devel
 cd
-wget https://www.rpmfind.net/linux/centos/7.4.1708/os/x86_64/Packages/libpcap-devel-1.5.3-9.el7.x86_64.rpm
-sudo yum install -y libpcap-devel-1.5.3-9.el7.x86_64.rpm
+wget https://www.rpmfind.net/linux/centos/7.5.1804/os/x86_64/Packages/libpcap-devel-1.5.3-11.el7.x86_64.rpm
+sudo yum install -y libpcap-devel-1.5.3-11.el7.x86_64.rpm
 
 # install Wireshark ###########################################################
 cd
@@ -90,7 +90,6 @@ echo spot | sudo -S echo "re-establish sudo"
 sudo make
 echo spot | sudo -S echo "re-establish sudo"
 sudo make install
-
 
 # download jar for spark streaming for proxy ##################################
 echo spot | sudo -S echo "re-establish sudo"

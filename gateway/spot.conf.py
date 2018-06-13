@@ -99,7 +99,7 @@ def main():
 
     cm_host = args.cm
     cluster_name = args.cn
-    api = ApiResource(cm_host, username="admin", password="admin")
+    api = ApiResource(cm_host, username="admin", password="admin", version=17)
 
     cluster = api.get_cluster(cluster_name)
 
@@ -113,7 +113,6 @@ def main():
     props.append(tuple(('UINODE', "{0}".format(gateway))))
     props.append(tuple(('MLNODE', "{0}".format(gateway))))
     props.append(tuple(('GWNODE', "{0}".format(gateway))))
-    props.append(tuple(('DBNAME', "'spot'")))
 
     #hdfs - base user and data source config
     props.append(tuple(('HUSER', "'/user/spot'")))
@@ -124,9 +123,29 @@ def main():
     props.append(tuple(('FLOW_PATH', "${HUSER}/${DSOURCE}/hive/y=${YR}/m=${MH}/d=${DY}/")))
     props.append(tuple(('HPATH', "${HUSER}/${DSOURCE}/scored_results/${FDATE}")))
 
+    # database config
+    props.append(tuple(('DBNAME', "'spot'")))
+    props.append(tuple(('DBENGINE', "''")))
+
     #impala config
     props.append(tuple(('IMPALA_DEM', datanode)))
     props.append(tuple(('IMPALA_PORT', "21050")))
+
+    # Kerberos config
+    props.append(tuple(('KERBEROS', 'true')))
+    props.append(tuple(('KINIT', '/usr/bin/kinit')))
+    props.append(tuple(('PRINCIPAL', 'spot')))
+    props.append(tuple(('KEYTAB', '/home/spot/spot.keytab')))
+    props.append(tuple(('SASL_MECH', 'GSSAPI')))
+    props.append(tuple(('SECURITY_PROTO', 'sasl_plaintext')))
+    props.append(tuple(('KAFKA_SERVICE_NAME', '')))
+
+    # SSL config
+    props.append(tuple(('SSL','false')))
+    props.append(tuple(('SSL_VERIFY', 'true')))
+    props.append(tuple(('CA_LOCATION', '')))
+    props.append(tuple(('CERT', '')))
+    props.append(tuple(('KEY', '')))
 
     props.append(tuple(('LUSER', "'/home/spot'")))
     props.append(tuple(('LPATH', "${LUSER}/ml/${DSOURCE}/${FDATE}")))
