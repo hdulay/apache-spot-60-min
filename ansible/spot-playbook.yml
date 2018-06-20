@@ -1,6 +1,6 @@
 ---
-- name: spot setup
-  hosts: gateway
+- name: python setup
+  hosts: worker:gateway
   remote_user: ec2-user
   become: yes 
   become_user: spot
@@ -58,7 +58,7 @@
 
   - name: pip installs
     pip:
-      name: cm-api
+      name: "{{ item }}"
     become: yes
     become_user: root
     loop:
@@ -66,7 +66,20 @@
       - watchdog
       - kafka-python
       - impyla
+      - argparse 
+      - cheetah 
+      - oauth
+      - dpkt
 
+  
+  
+
+- name: spot setup
+  hosts: gateway
+  remote_user: ec2-user
+  become: yes 
+  become_user: spot
+  tasks:
   - name: get spot from github
     git:
       repo: https://github.com/apache/incubator-spot
@@ -98,7 +111,7 @@
           target: install
         become: yes
         become_user: root
-      - name: 
+      - name: getting nfdump from github
         git:
           repo: https://github.com/Open-Network-Insight/spot-nfdump.git 
           clone: true
@@ -149,5 +162,15 @@
           target: install
         become: yes
         become_user: root
-    when: wireshark_is_installed != 0
+    when: wireshark_is_installed.rc != 0
+
+  - name: download sample data
+    get_url:
+      url: "{{ item }}"
+      dest: /home/spot
+    loop:
+      - https://s3-us-west-2.amazonaws.com/apachespot/public_data_sets/flow_aws/nfcapd_aws_utc_an.tar.gz
+      - https://s3-us-west-2.amazonaws.com/apachespot/public_data_sets/dns_aws/dns_pcap_synthetic_sample.zip
+      - http://log-sharing.dreamhosters.com/bluecoat_proxy_big.zip
+
   
