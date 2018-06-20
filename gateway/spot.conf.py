@@ -99,7 +99,7 @@ def main():
 
     cm_host = args.cm
     cluster_name = args.cn
-    api = ApiResource(cm_host, username="admin", password="admin", version==17)
+    api = ApiResource(cm_host, username="admin", password="admin", version=17)
 
     cluster = api.get_cluster(cluster_name)
 
